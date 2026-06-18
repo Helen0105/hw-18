@@ -188,7 +188,7 @@ function getStudents() {
     .catch(error => console.log(error));
 }
 
-// Функція для відображення студентів у таблиці
+
 function renderStudents(students) {
   const tbody = document.querySelector("#students-table tbody");
   tbody.innerHTML = "";
