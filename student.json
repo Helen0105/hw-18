@@ -1,23 +1,10 @@
 {
   "students": [
     {
-      "id": "1",
-      "name": "Ivan Petrenko",
-      "age": 15,
-      "course": "Web Development",
-      "skills": [
-        "HTML",
-        "CSS",
-        "JavaScript"
-      ],
-      "email": "ivan.petrenko@example.com",
-      "isEnrolled": true
-    },
-    {
       "id": "2",
       "name": "Olha Kovalenko",
       "age": 16,
-      "course": "Game Development",
+      "course": "дизайн",
       "skills": [
         "C#",
         "Unity"
@@ -65,27 +52,15 @@
       "isEnrolled": true
     },
     {
-      "name": "jktyf",
-      "age": 22,
-      "course": "frontend",
-      "skills": [
-        "soft",
-        "math"
-      ],
-      "email": "marinenkoolena21@gmail.com",
-      "isEnrolled": false,
-      "id": "w6bVs8XZR0Q"
-    },
-    {
-      "name": "Олена",
+      "name": "олена",
       "age": 14,
       "course": "frontend",
       "skills": [
         "soft math"
       ],
       "email": "marinenkoolena21@gmail.com",
-      "isEnrolled": true,
-      "id": "03LRxkkDwus"
+      "isEnrolled": false,
+      "id": "RHo4Z3vK_ok"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
