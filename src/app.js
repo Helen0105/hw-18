@@ -222,7 +222,7 @@ function addStudent(e) {
   const isEnrolledValue = document.getElementById('isEnrolled').checked;
   const skillsValue = document.getElementById('skills').value.split(',').map(s => s.trim());
 
-  const newStudent = {
+  const newStudent = {  
     name: nameValue,
     age: ageValue,
     course: courseValue,
