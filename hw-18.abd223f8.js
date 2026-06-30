@@ -1,0 +1,13 @@
+document.addEventListener("DOMContentLoaded",()=>{document.getElementById("get-students-btn").addEventListener("click",e),document.getElementById("add-student-form").addEventListener("submit",n),document.querySelector("#students-table tbody").addEventListener("click",e=>{let n=e.target.dataset.id;if(e.target.classList.contains("delete-btn")&&l(n),e.target.classList.contains("edit-btn")){t=n;let d=e.target.closest("tr"),l=document.getElementById("add-student-form");l.elements[0].value=d.children[1].textContent,l.elements[1].value=d.children[2].textContent,l.elements[2].value=d.children[3].textContent,l.elements[3].value=d.children[4].textContent,l.elements[4].value=d.children[5].textContent,l.elements[5].checked="Так"===d.children[6].textContent.trim()}})});let t=null;async function e(){try{var t;let e,n=await fetch("http://localhost:3000/students");t=await n.json(),(e=document.querySelector("#students-table tbody")).innerHTML="",t.forEach(t=>{let n=document.createElement("tr");n.innerHTML=`
+      <td>${t.id}</td>
+      <td>${t.name}</td>
+      <td>${t.age}</td>
+      <td>${t.course}</td>
+      <td>${t.skills.join(", ")}</td>
+      <td>${t.email}</td>
+      <td>${t.isEnrolled?"Так":"Ні"}</td>
+      <td>
+        <button class="edit-btn" data-id="${t.id}">\u{41E}\u{43D}\u{43E}\u{432}\u{438}\u{442}\u{438}</button>
+        <button class="delete-btn" data-id="${t.id}">\u{412}\u{438}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{438}</button>
+      </td>`,e.appendChild(n)})}catch(t){console.log(t)}}async function n(n){n.preventDefault();let l=document.getElementById("name").value,o=Number(document.getElementById("age").value),a=document.getElementById("course").value,s=document.getElementById("email").value,c=document.getElementById("isEnrolled").checked,r={name:l,age:o,course:a,skills:document.getElementById("skills").value.split(",").map(t=>t.trim()),email:s,isEnrolled:c};if(t)try{await d(t,r),e(),document.getElementById("add-student-form").reset(),t=null;return}catch(t){console.log("Помилка");return}try{let t=await fetch("http://localhost:3000/students",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(r)});await t.json(),document.getElementById("add-student-form").reset(),e()}catch(t){console.log(t)}}async function d(t,e){let n={method:"PUT",body:JSON.stringify(e),headers:{"Content-Type":"application/json; charset=UTF-8"}};try{let e=await fetch(`http://localhost:3000/students/${t}`,n);return await e.json()}catch(t){throw console.error("помилка в updateStudent:",t),t}}async function l(t){try{await fetch(`http://localhost:3000/students/${t}`,{method:"DELETE"}),e()}catch(t){console.log(t)}}
+//# sourceMappingURL=hw-18.abd223f8.js.map

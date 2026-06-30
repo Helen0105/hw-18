@@ -207,11 +207,11 @@
       });
     }
   }
-})({"7wZbQ":[function(require,module,exports,__globalThis) {
+})({"fBFNR":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
-var HMR_SERVER_PORT = 1234;
+var HMR_SERVER_PORT = 64082;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "439701173a9199ea";
 var HMR_USE_SSE = false;
@@ -714,122 +714,36 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"2R06K":[function(require,module,exports,__globalThis) {
-// document.addEventListener('DOMContentLoaded', () => {
-//     document.getElementById('get-students-btn').addEventListener('click', getStudents);
-//   document.getElementById('add-student-form').addEventListener('submit', addStudent);
-//   document.querySelector("#students-table tbody").addEventListener("click", (e) => {
-//     const id = e.target.dataset.id;
-//     if (e.target.classList.contains("delete-btn")){
-//       deleteStudent(id);}
-// if (e.target.classList.contains("edit-btn")) {
-//       updateStudent(id); 
-//     }
-//   })
-// })
-// // Функція для отримання всіх студентів
-// function getStudents() {
-// fetch("http://localhost:3000/students")
-// .then(response => response.json())
-// .then(data => {
-// renderStudents(data);
-// })
-// .catch(error => console.log(error));
-// }
-// // Функція для відображення студентів у таблиці
-// function renderStudents(students) {
-// const tbody = document.querySelector("#students-table tbody");
-// tbody.innerHTML = "";
-// students.forEach(student => {
-//   const row = document.createElement('tr');
-//   row.innerHTML = `
-//   <td>${student.id}</td>
-// <td>${student.name}</td>
-// <td>${student.age}</td>
-// <td>${student.course}</td>
-// <td>${student.skills.join(", ")}</td>
-// <td>${student.email}</td>
-// <td>${student.isEnrolled ? 'Так' : 'Ні'}</td>
-//       <td>
-//         <button class="edit-btn" data-id="${student.id}">Оновити</button>
-//         <button class="delete-btn" data-id="${student.id}">Видалити</button>
-//       </td>`;
-//       tbody.appendChild(row)
-// })
-// }
-// function addStudent(e) {
-//   e.preventDefault(); 
-//   const nameValue = document.getElementById("name").value;
-//   const ageValue = Number(document.getElementById("age").value);
-//   const courseValue = document.getElementById('course').value;
-//   const emailValue = document.getElementById('email').value;
-//   const isEnrolledValue = document.getElementById('isEnrolled').checked;
-//   const skillsValue = document.getElementById('skills').value.split(',').map(s => s.trim());
-//   const newStudent = {
-//     name: nameValue,
-//     age: ageValue,
-//     course: courseValue,
-//     skills: skillsValue,
-//     email: emailValue,
-//     isEnrolled: isEnrolledValue
-//   };
-//   fetch("http://localhost:3000/students", {
-//     method: "POST", 
-//     headers: {
-//       "Content-Type": "application/json" 
-//     },
-//     body: JSON.stringify(newStudent) 
-//   })
-//   .then(response => response.json())
-//   .then(() => {
-//     document.getElementById('add-student-form').reset();
-//     getStudents();
-//   })
-//   .catch(error => console.log(error));
-// }
-// // Функція для оновлення студента
-// function updateStudent(id) {
-//   const newCourse = prompt("Введіть новий курс для студента");
-//   const updatedData = {
-//     course: newCourse
-//   };
-//   fetch(`http://localhost:3000/students/${id}`, {
-//     method: "PATCH", 
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify(updatedData)
-//   })
-//   .then(() => {
-//     getStudents(); 
-//   })
-//   .catch(error => console.log(error));
-// } 
-// // Функція для видалення студента
-// function deleteStudent(id) {
-// fetch(`http://localhost:3000/students/${id}`, {
-//   method: "DELETE"
-// })
-// .then(() => {
-//     getStudents(); 
-//   })
-// }
 document.addEventListener('DOMContentLoaded', ()=>{
     document.getElementById('get-students-btn').addEventListener('click', getStudents);
     document.getElementById('add-student-form').addEventListener('submit', addStudent);
-    // Слухач кліків для кнопок "Оновити" та "Видалити" у таблиці
     document.querySelector("#students-table tbody").addEventListener("click", (e)=>{
         const id = e.target.dataset.id;
         if (e.target.classList.contains("delete-btn")) deleteStudent(id);
-        if (e.target.classList.contains("edit-btn")) updateStudent(id);
+        if (e.target.classList.contains("edit-btn")) {
+            currentId = id;
+            const currentRow = e.target.closest("tr");
+            const form = document.getElementById("add-student-form");
+            form.elements[0].value = currentRow.children[1].textContent;
+            form.elements[1].value = currentRow.children[2].textContent;
+            form.elements[2].value = currentRow.children[3].textContent;
+            form.elements[3].value = currentRow.children[4].textContent;
+            form.elements[4].value = currentRow.children[5].textContent;
+            form.elements[5].checked = currentRow.children[6].textContent.trim() === "\u0422\u0430\u043A";
+        }
     });
 });
-// Функція для отримання всіх студентів
-function getStudents() {
-    fetch("http://localhost:3000/students").then((response)=>response.json()).then((data)=>{
+let currentId = null;
+// Функція для отримання всіх студентів 
+async function getStudents() {
+    try {
+        const response = await fetch("http://localhost:3000/students");
+        const data = await response.json();
         renderStudents(data);
-    }).catch((error)=>console.log(error));
+    } catch (error) {
+        console.log(error);
+    }
 }
-// Функція для відображення студентів у таблиці
 function renderStudents(students) {
     const tbody = document.querySelector("#students-table tbody");
     tbody.innerHTML = "";
@@ -851,7 +765,7 @@ function renderStudents(students) {
     });
 }
 // Функція для додавання нового студента
-function addStudent(e) {
+async function addStudent(e) {
     e.preventDefault();
     const nameValue = document.getElementById("name").value;
     const ageValue = Number(document.getElementById("age").value);
@@ -867,43 +781,73 @@ function addStudent(e) {
         email: emailValue,
         isEnrolled: isEnrolledValue
     };
-    fetch("http://localhost:3000/students", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newStudent)
-    }).then((response)=>response.json()).then(()=>{
+    if (currentId) try {
+        await updateStudent(currentId, newStudent);
+        getStudents();
+        document.getElementById('add-student-form').reset();
+        currentId = null;
+        return;
+    } catch (error) {
+        console.log("\u041F\u043E\u043C\u0438\u043B\u043A\u0430");
+        return;
+    }
+    try {
+        const response = await fetch("http://localhost:3000/students", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newStudent)
+        });
+        await response.json();
         document.getElementById('add-student-form').reset();
         getStudents();
-    }).catch((error)=>console.log(error));
+    } catch (error) {
+        console.log(error);
+    }
 }
-// Функція для оновлення студента (PATCH)
-function updateStudent(id) {
-    const newCourse = prompt("\u0412\u0432\u0435\u0434\u0456\u0442\u044C \u043D\u043E\u0432\u0438\u0439 \u043A\u0443\u0440\u0441 \u0434\u043B\u044F \u0441\u0442\u0443\u0434\u0435\u043D\u0442\u0430");
-    if (!newCourse) return; // Якщо користувач скасував або нічого не ввів
-    const updatedData = {
-        course: newCourse
-    };
-    fetch(`http://localhost:3000/students/${id}`, {
-        method: "PATCH",
+// Функція для оновлення студента
+async function updateStudent(id, data) {
+    const options = {
+        method: "PUT",
+        body: JSON.stringify(data),
         headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedData)
-    }).then(()=>{
-        getStudents();
-    }).catch((error)=>console.log(error));
+            "Content-Type": "application/json; charset=UTF-8"
+        }
+    };
+    //   fetch(`http://localhost:3000/students/${id}`, {
+    //     method: "PATCH", 
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify(updatedData)
+    //   })
+    //   .then(() => {
+    //     getStudents(); 
+    //   })
+    //   .catch(error => console.log(error));
+    // } 
+    try {
+        const res = await fetch(`http://localhost:3000/students/${id}`, options);
+        const response = await res.json();
+        return response;
+    } catch (error) {
+        console.error("\u043F\u043E\u043C\u0438\u043B\u043A\u0430 \u0432 updateStudent:", error);
+        throw error;
+    }
 }
-// Функція для видалення студента (DELETE)
-function deleteStudent(id) {
-    fetch(`http://localhost:3000/students/${id}`, {
-        method: "DELETE"
-    }).then(()=>{
+// Функція для видалення студента 
+async function deleteStudent(id) {
+    try {
+        await fetch(`http://localhost:3000/students/${id}`, {
+            method: "DELETE"
+        });
         getStudents();
-    }).catch((error)=>console.log(error));
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-},{}]},["7wZbQ","2R06K"], "2R06K", "parcelRequire6793", {})
+},{}]},["fBFNR","2R06K"], "2R06K", "parcelRequire6793", {})
 
 //# sourceMappingURL=hw-18.0f77c784.js.map
